@@ -1,0 +1,72 @@
+{% load static %}
+{% load static tailwind_tags %}
+<style>
+    body, html {
+        height: 100%;
+        margin: 0; /* Resets any browser default margin */
+    }
+	body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; /* This makes the body at least the height of the viewport */
+	}
+
+	main {
+		flex: 1; /* This will make the main content grow and shrink as needed */
+		overflow-x: hidden; /* Prevents horizontal scroll at the body level */
+		overflow-y: auto; /* Enables vertical scroll inside the main tag */
+		/* Remove the overflow properties if you want the .data-table-container to control scrolling */
+	}
+</style>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %} Blog Site {% endblock %}</title>
+    {% tailwind_css %}
+	<link href="{% static 'css/dist/styles.css' %}" rel="stylesheet">
+    <script src="{% static 'js/alpinejs.min.js' %}"></script> <!-- Alpine.js for interactivity -->
+    <link href="{% static 'css/tailwind.css' %}" rel="stylesheet">
+</head>
+
+
+
+
+<body class="bg-gray-50 font-serif leading-normal tracking-normal">
+    <nav class="bg-white shadow-md">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex justify-between">
+                <div class="flex space-x-4">
+                    <div>
+                        <a href="/" class="flex items-center py-5 px-2 text-gray-700 hover:text-gray-900">
+                            <span class="font-bold">Blogs</span>
+                        </a>
+                    </div>
+                    <!-- Navigation Links -->
+                    <div class="hidden md:flex items-center space-x-1">
+                        <a href="{% url 'home' %}" class="py-5 px-3 text-gray-700 hover:text-gray-900">Home</a>
+						<a href="{% url 'article_list_html' %}" class="py-5 px-3 text-gray-700 hover:text-gray-900">Articles</a>
+                        {% if user.is_authenticated %}
+                        <a href="{% url 'logout' %}" class="py-5 px-3 text-gray-700 hover:text-gray-900">Logout</a>
+                        {% else %}
+                        <a href="{% url 'login' %}" class="py-5 px-3 text-gray-700 hover:text-gray-900">Login</a>
+                        <a href="{% url 'signup' %}" class="py-5 px-3 text-gray-700 hover:text-gray-900">Sign Up</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <main x-data="{ modalOpen: false }">
+        {% block content %}
+        <!-- Default content can go here if none provided by child templates -->
+        {% endblock %}
+    </main>
+
+	<footer class="w-4/5 mx-auto bg-white bg-opacity-50 text-center p-5 shadow-md">
+        © 2023 JoorHub. All rights reserved.
+    </footer>
+</body>
+</html>

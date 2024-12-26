@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% load comments %}
+
+{% block title %}{{ article_details.title }}{% endblock %}
+
+{% block content %}
+<div class="flex flex-col items-center py-8">
+    <!-- Article Image -->
+    <div class="mb-4">
+        <img class="h-auto max-w-full rounded-lg" src="{{ article_details.image_url }}" alt="{{ article_details.title }}">
+    </div>
+
+    <!-- Article Title -->
+    <h1 class="text-2xl font-bold mb-4">{{ article_details.title }}</h1>
+
+    <!-- Article Content -->
+    <p class="text-lg mb-4">{{ article_details.content }}</p>
+
+    <!-- Article Metadata -->
+    <div class="text-sm text-gray-600">
+        <p>Published on: {{ article_details.timestamp }}</p>
+        <p>Category: {{ article_details.category.name }}</p>
+    </div>
+    
+    <div class="flex-col py-8">
+        {% include 'articles/comment_form.html' %}
+    </div>
+
+    <div class="flex-col py-8">
+        <h3>Comments</h3>
+        {% for comment in comments %}
+            <div class="flex flex-col items-center py-8">
+                <p class="text-lg">{{ comment.content }}</p>
+                <p class="text-sm text-gray-600">Commented by: {{ comment.author }}</p>
+                <p class="text-sm text-gray-600">Posted on: {{ comment.timestamp }}</p>
+            </div>
+        {% empty %}
+            <p>No comments yet.</p>
+        {% endfor %}
+    </div>
+
+</div>
+{% endblock %}

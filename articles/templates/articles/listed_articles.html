@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% load tailwind_tags %}
+{% tailwind_css %}
+
+{% block title %}Articles{% endblock %}
+
+{% block content %}
+<div class="flex items-center justify-center py-4 md:py-8 flex-wrap space-x-3">
+    <a href="{% url 'article_list_html' %}">
+        <button type="button" class="btn-category-pill">All Categories</button>
+    </a>
+    {% for category in categories %}
+        <a href="{% url 'article_list_by_category' category.id %}">
+            <button type="button" class="btn-category">{{ category.name }}</button>
+        </a>
+    {% endfor %}
+    <a href="{% url 'create_article' %}">
+        <button type="button" class="btn-create-article">Create an Article</button>
+    </a>
+</div>
+
+<div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+    {% for article in article_posts %}
+        <div>
+            <a href="{% url 'article_detail' article.id %}">
+                <img class="h-auto max-w-full rounded-lg" src="{{ article.image_url }}" alt="{{ article.title }}">
+            </a>
+        </div>
+    {% endfor %}
+</div>
+{% endblock %}
